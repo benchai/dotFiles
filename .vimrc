@@ -11,7 +11,40 @@ endif
 
 " Plugins!
 execute pathogen#infect()
+
 "set runtimepath^=~/.vim/bundle/ctrlp.vim
+"ctrlp settings
+let g:ctrlp_max_files = 0 "0 is unlimited files
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files'] "list tracked files
+"let g:ctrlp_custom_ignore = {
+"  \ 'dir':  '\v[\/]\.(git|hg|svn|target)$',
+"  \ 'file': '\v\.(exe|so|dll|xml|html|class|jar|marker|tokens|md|iml|png)$',
+"  \ }
+let g:ctrlp_follow_symlinks=0
+let g:ctrlp_by_filename = 0
+let g:ctrlp_clear_cache_on_exit = 0
+
+"javacomplete2 settings
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+
+let g:SuperTabDefaultCompletionType = 'context'
+autocmd FileType *
+  \ if &omnifunc != '' |
+  \   call SuperTabChain(&omnifunc, "<c-p>") |
+  \ endif
+
+nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+
+nmap <F5> <Plug>(JavaComplete-Imports-Add)
+imap <F5> <Plug>(JavaComplete-Imports-Add)
+
+nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+
+nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -25,7 +58,7 @@ if has("unix")
    silent !mkdir -p /tmp/$USER
    silent !chmod 700 /tmp/$USER
    set viminfo='32,f0,\"10,n/tmp/$USER/viminfo,<1000,s1000
-   set grepprg=grep\ -n          " use grep program, starting vim 7, we should use vimgrep
+   set grepprg=git\ grep\ -n     " use git grep program
    set shell=/bin/bash           " use bash shell by default
    set directory=/tmp/$USER      " set temporary directory for swap files
    set viewdir=/tmp/$USER        " set temporary directory for view files
@@ -241,13 +274,14 @@ if version >= 700
       endif
    else
       " nvim maps alt-8 to that weird upside down period
-      map <expr> ¸ ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+      " map <expr> ¸ ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>" "slower but supports non git-grep
+       map <expr> ¸ ":grep -w <cword> <cr>"
    endif
 else
    if has("gui_running")
       map <expr> • ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
    else
-      map <expr> <esc>8 ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+      map <expr> <esc>8 ":grep -rw <cword> " `git ls-files "*<cr>"
    endif
 endif
 
@@ -259,18 +293,18 @@ let g:netrw_altv = 1
 
 " Completion.. From vim.org Tip #102: smart mapping for tab completion during
 " insert mode
-function! InsertTabWrapper(direction)
-   let col = col('.') - 1
-   if !col || getline('.')[col - 1] !~ '\k'
-      return "\<tab>"
-   elseif "backward" == a:direction
-      return "\<c-p>"
-   else
-      return "\<c-n>"
-   endif
-endfunction
-inoremap <tab> <c-r>=InsertTabWrapper("backward")<cr>
-inoremap <s-tab> <c-r>=InsertTabWrapper("forward")<cr>
+" function! InsertTabWrapper(direction)
+"    let col = col('.') - 1
+"    if !col || getline('.')[col - 1] !~ '\k'
+"       return "\<tab>"
+"    elseif "backward" == a:direction
+"       return "\<c-p>"
+"    else
+"       return "\<c-n>"
+"    endif
+" endfunction
+" inoremap <tab> <c-r>=InsertTabWrapper("backward")<cr>
+" inoremap <s-tab> <c-r>=InsertTabWrapper("forward")<cr>
 
 " mapping to make movements operate on 1 screen line in wrap mode
 " Unfortunately, this only works on vim 7. Please use vim7 to enable this
@@ -395,7 +429,7 @@ if has("autocmd")
       endif
       normal `Z
    endfunction
-   autocmd FileType c,cpp,java,python autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
+   autocmd FileType c,cpp,java,python,javascript autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
 
    " When editing a file, always jump to the last known cursor position.
    " Don't do it when the position is invalid or when inside an event handler

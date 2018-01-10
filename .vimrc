@@ -147,9 +147,9 @@ set showfulltag                  " when completing a word in insert mode,
 " Set tab & indent options
 set expandtab                    " insert spaces instead of tabs in insert mode
 set smarttab                     " :help smarttab
-set shiftwidth=4                 " shift distance, mainly for >> or << command
+set shiftwidth=2                 " shift distance, mainly for >> or << command
 set shiftround                   " When shifting, round indent distance by multiple shiftwidth
-set tabstop=4                    " tabstop
+set tabstop=2                    " tabstop
 
 " Set smartindent feature
 set autoindent                   " auto indent next line according to this line
@@ -331,6 +331,7 @@ endif
 " TODO: determine the leader character you like. Default is '\', but ',' seems
 " more easily accessible
 let mapleader=","
+let maplocalleader=","
 
 " got these functions below from scratch.vim, and modified it
 function! MarkCurrentBufferToBeScratch()

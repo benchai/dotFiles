@@ -1,0 +1,8 @@
+bufexplorer
+ctrlp.vim
+nerdtree
+supertab
+vim-airline
+vim-javacomplete2
+vim-javascript
+vim-jsx

@@ -1,0 +1,13 @@
+Install Firefox
+Install Alfred
+Install homebrew
+brew install git
+Pull down dotfiles
+brew install neovim
+install pathogen https://github.com/tpope/vim-pathogen
+install plugins
+brew install fish
+
+
+
+

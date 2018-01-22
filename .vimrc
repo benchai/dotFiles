@@ -1,16 +1,23 @@
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
+"     for Unix and OS/2 neovim:  ~/.config/nvim/init.vim
 "     for Amiga:  s:.vimrc
 "     for MS-DOS and Win32:  $VIM\_vimrc
 "     for OpenVMS:  sys$login:.vimrc
 
+" Use Vim settings, rather then Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
 " When started as "evim", evim.vim will already have done these settings.
-if v:progname =~? "evim"
-   finish
-endif
+" if v:progname =~? "evim"
+"    finish
+" endif
 
 " Plugins!
 execute pathogen#infect()
+
+" TODO: Try out vundle? Check for nvim compatibility
 
 "set runtimepath^=~/.vim/bundle/ctrlp.vim
 "ctrlp settings
@@ -46,9 +53,6 @@ nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
 imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
 
 
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
 
 " Unified clipboard maybe only for osx
 set clipboard+=unnamedplus

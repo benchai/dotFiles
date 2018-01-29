@@ -8,16 +8,30 @@
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-
-" When started as "evim", evim.vim will already have done these settings.
-" if v:progname =~? "evim"
-"    finish
-" endif
+filetype off  " required for vundle plugin initialization, can be turned on after
 
 " Plugins!
-execute pathogen#infect()
+" execute pathogen#infect()
 
-" TODO: Try out vundle? Check for nvim compatibility
+" Try out vundle
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Keep Plugin commands between vundle#begin/end.
+Plugin 'scrooloose/nerdtree'
+Plugin 'jlanzarotta/bufexplorer'
+Plugin 'kien/ctrlp.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'OrangeT/vim-csharp'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 "set runtimepath^=~/.vim/bundle/ctrlp.vim
 "ctrlp settings
@@ -32,27 +46,25 @@ let g:ctrlp_by_filename = 0
 let g:ctrlp_clear_cache_on_exit = 0
 
 "javacomplete2 settings
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
+"autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
-let g:SuperTabDefaultCompletionType = 'context'
-autocmd FileType *
-  \ if &omnifunc != '' |
-  \   call SuperTabChain(&omnifunc, "<c-p>") |
-  \ endif
-
-nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
-imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
-
-nmap <F5> <Plug>(JavaComplete-Imports-Add)
-imap <F5> <Plug>(JavaComplete-Imports-Add)
-
-nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
-imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
-
-nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
-imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
-
-
+"let g:SuperTabDefaultCompletionType = 'context'
+"autocmd FileType *
+"  \ if &omnifunc != '' |
+"  \   call SuperTabChain(&omnifunc, "<c-p>") |
+"  \ endif
+"
+"nmap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+"imap <F4> <Plug>(JavaComplete-Imports-AddSmart)
+"
+"nmap <F5> <Plug>(JavaComplete-Imports-Add)
+"imap <F5> <Plug>(JavaComplete-Imports-Add)
+"
+"nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+"imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+"
+"nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+"imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
 
 " Unified clipboard maybe only for osx
 set clipboard+=unnamedplus
@@ -116,11 +128,11 @@ set list                         " always in list mode to show unseen chars
 
 
 " Set status line appearance
-set laststatus=2                 " window will always have status line
-set ruler                        " have current cursor position in status line
-set showcmd                      " show command in status line
-set showmode                     " show current mode in the status line
-set wildmenu                     " show possible matches on the status line
+"set laststatus=2                 " window will always have status line
+"set ruler                        " have current cursor position in status line
+"set showcmd                      " show command in status line
+"set showmode                     " show current mode in the status line
+"set wildmenu                     " show possible matches on the status line
 
 " TODO: decide if you like to set filename completion to be like bash
 set wildmode=longest:full
@@ -150,7 +162,7 @@ set showfulltag                  " when completing a word in insert mode,
 
 " Set tab & indent options
 set expandtab                    " insert spaces instead of tabs in insert mode
-set smarttab                     " :help smarttab
+"set smarttab                     " :help smarttab
 set shiftwidth=2                 " shift distance, mainly for >> or << command
 set shiftround                   " When shifting, round indent distance by multiple shiftwidth
 set tabstop=2                    " tabstop
@@ -207,7 +219,7 @@ map <C-End> G$
 
 " iterate over tag definition, help tags for more info
 nmap <C-n> :tn<cr>
-nmap <C-p> :tp<cr>
+nmap <C-o> :tp<cr>
 
 " more ctags maps
 nmap <C-\> :tab split<cr>:exec("tag ".expand("<cword>"))<cr>
@@ -220,7 +232,8 @@ if !has('nvim')
     " nmap ‘ :vsplit <cr>:exec("tag ".expand("<cword>"))<cr>
 else
     " Somehow on nvim it maps to Ý... consistency is awesome
-    nmap Ý :vsplit <cr>:exec("tag ".expand("<cword>"))<cr>
+    " nmap Ý :vsplit <cr>:exec("tag ".expand("<cword>"))<cr>
+    nmap ‘ :vsplit <cr>:exec("tag ".expand("<cword>"))<cr>
 endif
 
 " These mappings below uses two different cases, because vim on regular
@@ -249,16 +262,16 @@ endif
 " endif
 
 " go to next and previous buffer. To switch rapidly btw 2 buffers, use Ctrl-6
-if has("gui_running")
-   map <M-.> :bnext<cr>
-   map <M-,> :bprevious<cr>
-else
-   map <esc>. :bnext<cr>
-   map <esc>, :bprevious<cr>
-endif
+" if has("gui_running")
+"    map <M-.> :bnext<cr>
+"    map <M-,> :bprevious<cr>
+" else
+"    map <esc>. :bnext<cr>
+"    map <esc>, :bprevious<cr>
+" endif
 
 " map ctrl-backspace to delete prev word in insert mode
-imap <C-BS> <C-W>
+" imap <C-BS> <C-W>
 
 " map Alt-8 to grep for the current word in the subdirectories. Why alt-8?
 " because shift-8, or the '*' is to search for the current word in the current
@@ -272,14 +285,17 @@ let g:sourceDir="./"
 if version >= 700
    if !has('nvim')
       if has("gui_running")
-         map <expr> • ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+         "map <expr> • ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+         map <expr> • ":grep -rw <cword> " . g:sourceDir . "*<cr>"
       else
-         map <expr> <esc>8 ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+         "map <expr> <esc>8 ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>"
+         map <expr> <esc>8 ":grep -rw <cword> " . g:sourceDir . "*<cr>"
       endif
    else
       " nvim maps alt-8 to that weird upside down period
       " map <expr> ¸ ":grep -rw --include=*.java <cword> " . g:sourceDir . "*<cr>" "slower but supports non git-grep
-       map <expr> ¸ ":grep -w <cword> <cr>"
+      " map <expr> ¸ ":grep -w <cword> <cr>"
+      map <expr> • ":grep -w <cword> <cr>"
    endif
 else
    if has("gui_running")
@@ -434,7 +450,7 @@ if has("autocmd")
       endif
       normal `Z
    endfunction
-   autocmd FileType c,cpp,java,python,javascript autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
+   autocmd FileType c,cpp,java,python,javascript,cs autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
 
    " When editing a file, always jump to the last known cursor position.
    " Don't do it when the position is invalid or when inside an event handler

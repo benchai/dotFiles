@@ -28,10 +28,15 @@ Plugin 'jlanzarotta/bufexplorer'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'OrangeT/vim-csharp'
+Plugin 'Valloric/YouCompleteMe'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+
+" YouCompleteMe
+let g:ycm_server_python_interpreter = '/usr/bin/python'
 
 "set runtimepath^=~/.vim/bundle/ctrlp.vim
 "ctrlp settings
@@ -491,6 +496,12 @@ endif
 " Another good one: http://ethanschoonover.com/solarized
 colorscheme koehler
 hi MatchParen guibg=darkgreen
+
+" vimdiff highlighting options
+highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 
 " TODO: Uncomment this below if you want VIM to behave more like MSWin editor:
 " Ctrl-A select all, Ctrl-V paste, Ctrl-C copy, etc

@@ -1,0 +1,20 @@
+[user]
+	email = chai@disco.com
+[core]
+	editor = /usr/bin/vim
+	excludesfile = /Users/benchai/.gitignore_global
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+	m = mergetool
+[merge]
+	tool = diffconflicts
+[mergetool "diffconflicts"]
+	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+	keepBackup = false
+[mergetool]
+	keepBackup = false

@@ -29,14 +29,18 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
 Plugin 'OrangeT/vim-csharp'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'freitass/todo.txt-vim'
+Plugin 'hdima/python-syntax'
+Plugin 'vim-syntastic/syntastic'
+" After adding something new run :PluginInstall
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-
 " YouCompleteMe
-let g:ycm_server_python_interpreter = '/usr/bin/python'
+"let g:ycm_server_python_interpreter = '/usr/bin/python'
+let g:ycm_autoclose_preview_window_after_completion=1
 
 "set runtimepath^=~/.vim/bundle/ctrlp.vim
 "ctrlp settings
@@ -49,6 +53,16 @@ let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files'] "list tracked files
 let g:ctrlp_follow_symlinks=0
 let g:ctrlp_by_filename = 0
 let g:ctrlp_clear_cache_on_exit = 0
+
+"stupid new mac got rid of the esc key
+inoremap jk <ESC>
+inoremap kj <ESC>
+
+" syntastic settings
+"let g:syntastic_python_pyflakes_exec = 'python3'
+"let g:syntastic_python_pyflakes_args = ['-m', 'pyflakes']
+let g:syntastic_python_pyflakes_exe = 'python3 -m pyflakes'
+let g:syntastic_python_checkers = ['flake8', 'pyflakes']
 
 "javacomplete2 settings
 "autocmd FileType java setlocal omnifunc=javacomplete#Complete
@@ -74,17 +88,22 @@ let g:ctrlp_clear_cache_on_exit = 0
 " Unified clipboard maybe only for osx
 set clipboard+=unnamedplus
 
+" Don't append trailing end of line
+set nofixendofline
+
 if has("unix")
    " create /tmp/$USER for tmp dir for temporary files
    silent !mkdir -p /tmp/$USER
    silent !chmod 700 /tmp/$USER
-   set viminfo='32,f0,\"10,n/tmp/$USER/viminfo,<1000,s1000
+   " nvim doens't like viminfo https://github.com/neovim/neovim/issues/3469
+   " set viminfo='32,f0,\"10,n/tmp/$USER/viminfo,<1000,s1000
    set grepprg=git\ grep\ -n     " use git grep program
    set shell=/bin/bash           " use bash shell by default
    set directory=/tmp/$USER      " set temporary directory for swap files
    set viewdir=/tmp/$USER        " set temporary directory for view files
 else
-   set viminfo='32,f0,\"10,n$TMP/viminfo
+   " nvim doens't like viminfo
+   " set viminfo='32,f0,\"10,n$TMP/viminfo
    set grepprg=grep.exe\ -n  " Assume grep is already in the path. use grep program, starting vim 7, we should use vimgrep
    set shell=cmd.exe             " use standard cmd.exe on Windows
    set directory=$TMP            " set temporary directory for swap files
@@ -412,10 +431,22 @@ else
    nmap <Leader>e :e <C-R>=expand("%:h")."\\"<CR>
 endif
 
+" nvim specific mappings
+if has('nvim')
+   nmap <Leader>tf :tabedit term://fish<CR>
+   nmap <Leader>tb :tabedit term://bash<CR>
+endif
+
+" nerdtree
+nmap <Leader>nt :NERDTreeFind<CR>
+
+" ycm
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+
 " this maps ,tl to switch to the last tab, handy for working with tabs
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
+" let g:lasttab = 1
+" nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+" au TabLeave * let g:lasttab = tabpagenr()
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -455,7 +486,7 @@ if has("autocmd")
       endif
       normal `Z
    endfunction
-   autocmd FileType c,cpp,java,python,javascript,cs autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
+   autocmd FileType c,cpp,java,python,javascript autocmd BufWritePre <buffer> :call StripTrailingWhitespace()
 
    " When editing a file, always jump to the last known cursor position.
    " Don't do it when the position is invalid or when inside an event handler

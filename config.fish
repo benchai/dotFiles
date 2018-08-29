@@ -1,4 +1,4 @@
-set -x PATH ~/Library/Python/2.7/bin $PATH
+# set -x PATH ~/Library/Python/2.7/bin $PATH
 
 set fish_git_dirty_color red
 set fish_git_not_dirty_color green

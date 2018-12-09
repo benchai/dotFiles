@@ -27,11 +27,13 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'kien/ctrlp.vim'
 Plugin 'vim-airline/vim-airline'
-Plugin 'OrangeT/vim-csharp'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'OrangeT/vim-csharp'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'freitass/todo.txt-vim'
 Plugin 'hdima/python-syntax'
 Plugin 'vim-syntastic/syntastic'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
 " After adding something new run :PluginInstall
 
 " All of your Plugins must be added before the following line

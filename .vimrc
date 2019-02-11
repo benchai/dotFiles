@@ -8,36 +8,37 @@
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
-filetype off  " required for vundle plugin initialization, can be turned on after
 
 " Plugins!
-" execute pathogen#infect()
+" Install vim-plug if we don't already have it
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" Try out vundle
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+call plug#begin('~/.local/share/nvim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Autocomplete with deoplete
+Plug 'Shougo/deoplete.nvim'
+Plug 'zchee/deoplete-jedi'
 
-" Keep Plugin commands between vundle#begin/end.
-Plugin 'scrooloose/nerdtree'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'kien/ctrlp.vim'
-Plugin 'vim-airline/vim-airline'
-"Plugin 'OrangeT/vim-csharp'
-"Plugin 'Valloric/YouCompleteMe'
-Plugin 'freitass/todo.txt-vim'
-Plugin 'hdima/python-syntax'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
-" After adding something new run :PluginInstall
+Plug 'scrooloose/nerdtree'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-airline/vim-airline'
+"Plug 'OrangeT/vim-csharp'
+"Plug 'Valloric/YouCompleteMe'
+Plug 'freitass/todo.txt-vim'
+Plug 'hdima/python-syntax'
+Plug 'vim-syntastic/syntastic'
+Plug 'davidhalter/jedi-vim'
+Plug 'ervandew/supertab'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+" Required by Plug
+" Initialize plugin system
+call plug#end()
 filetype plugin indent on    " required
 
 " YouCompleteMe
@@ -230,15 +231,8 @@ let g:no_html_toolbar="no"       " html.vim: don't use toolbar
 let Tlist_Inc_Winwidth = 0       " taglist.vim: don't resize during Tlist
 
 " TODO: Set key mappings. Customize the following depending on your preference
-mapclear
+" mapclear
 
-" cursor movements
-map <Home> 0
-map <End> $
-map <C-Left> b
-map <C-Right> w
-map <C-Home> 1G
-map <C-End> G$
 
 " Ctrl Q to quit all
 " nmap <C-q> :qa<cr>

@@ -41,6 +41,10 @@ Plug 'ervandew/supertab'
 call plug#end()
 filetype plugin indent on    " required
 
+" Python stuff
+let g:python3_host_prog='/Users/benchai/nvim_venv/neovim3/bin/python'
+"let g:python_host_prog='/Users/benchai/nvim_venv/neovim2/bin/python'
+
 " YouCompleteMe
 "let g:ycm_server_python_interpreter = '/usr/bin/python'
 let g:ycm_autoclose_preview_window_after_completion=1
@@ -64,7 +68,7 @@ inoremap kj <ESC>
 " syntastic settings
 "let g:syntastic_python_pyflakes_exec = 'python3'
 "let g:syntastic_python_pyflakes_args = ['-m', 'pyflakes']
-let g:syntastic_python_pyflakes_exe = 'python3 -m pyflakes'
+let g:syntastic_python_pyflakes_exe = g:python3_host_prog . ' -m pyflakes'
 let g:syntastic_python_checkers = ['flake8', 'pyflakes']
 
 "javacomplete2 settings

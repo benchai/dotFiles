@@ -3,8 +3,10 @@ Install Alfred
 Install homebrew
 brew install git
 Pull down dotfiles
+# todo: install python3, install pip3, install virtualenv
 brew install neovim
-install pathogen https://github.com/tpope/vim-pathogen
+https://github.com/neovim/neovim/wiki/Installing-Neovim
+create virtualenv for neovim, pip install pynvim
 install plugins
 brew install fish
 
